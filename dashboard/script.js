@@ -110,3 +110,65 @@ subjectAverage.science /= students.length;
 subjectAverage.english /= students.length;
 
 console.log("Subject averages:", subjectAverage);
+//rank
+const ranked = [...report]
+    .sort((a, b) => b.total - a.total)
+    .map((s, i) => ({
+        ...s,
+        rank: i + 1
+    }));
+
+console.table(ranked);
+//display
+const board = document.getElementById("board");
+const jsonElement = document.getElementById("json");
+function showTable(list) {
+    board.innerHTML = list.map(s => {
+        const student = students.find(item => item.name === s.name);
+
+        return `
+            <tr>
+                <td>${s.name}</td>
+                <td>${student.maths}</td>
+                <td>${student.science}</td>
+                <td>${student.english}</td>
+                <td>${s.total}</td>
+                <td>${s.average}</td>
+                <td>${s.grade}</td>
+                <td>${s.rank ?? "-"}</td>
+            </tr>
+        `;
+    }).join("");
+}
+
+document.getElementById("allBtn")
+    .addEventListener("click", () => showTable(report));
+
+document.getElementById("passedBtn")
+    .addEventListener("click", () => {
+        const passedNames = passed.map(s => s.name);
+        const passedReport = report.filter(s =>
+            passedNames.includes(s.name)
+        );
+
+        showTable(passedReport);
+    });
+
+document.getElementById("sortBtn")
+    .addEventListener("click", () => showTable(ranked));
+
+showTable(report);
+//json
+
+jsonElement.textContent = JSON.stringify(report, null, 2);
+
+document.getElementById("parseBtn")
+    .addEventListener("click", () => {
+        try {
+            const parsedData = JSON.parse(jsonInput.value);
+            message.textContent = "Valid JSON!";
+            console.log(parsedData);
+        } catch (error) {
+            message.textContent = "Invalid JSON. Please check the format.";
+        }
+    });
