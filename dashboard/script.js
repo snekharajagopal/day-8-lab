@@ -36,3 +36,27 @@ const students = [
         english: 45
     }
 ];
+const total = s =>
+    s.maths + s.science + s.english;
+
+const average = s =>
+    Number((total(s) / 3).toFixed(2));
+
+const grade = avg =>
+    avg >= 90 ? "A" :
+    avg >= 75 ? "B" :
+    avg >= 60 ? "C" :
+    avg >= 40 ? "D" : "F";
+//test
+console.log(total(students[0]));
+console.log(average(students[0]));
+console.log(grade(average(students[0])));
+//map()
+const report = students.map(s => ({
+    name: s.name,
+    total: total(s),
+    average: average(s),
+    grade: grade(average(s))
+}));
+
+console.table(report);
