@@ -60,3 +60,53 @@ const report = students.map(s => ({
 }));
 
 console.table(report);
+//filter
+const passed = students.filter(s =>
+    [s.maths, s.science, s.english].every(mark => mark >= 40)
+);
+
+const failed = students.filter(s =>
+    [s.maths, s.science, s.english].some(mark => mark < 40)
+);
+
+console.log("Passed students:");
+console.table(passed);
+
+console.log("Number of failed students:", failed.length);
+//class average
+const classTotal = students.reduce(
+    (sum, s) => sum + average(s),
+    0
+);
+
+const classAverage = classTotal / students.length;
+
+console.log(`Class average: ${classAverage.toFixed(2)}`);
+//class topper
+const topper = students.reduce((best, current) =>
+    total(current) > total(best) ? current : best
+);
+
+console.log("Topper:", topper.name);
+console.log("Topper total:", total(topper));
+//average of each subject
+const subjectAverage = students.reduce(
+    (result, s) => {
+        result.maths += s.maths;
+        result.science += s.science;
+        result.english += s.english;
+
+        return result;
+    },
+    {
+        maths: 0,
+        science: 0,
+        english: 0
+    }
+);
+
+subjectAverage.maths /= students.length;
+subjectAverage.science /= students.length;
+subjectAverage.english /= students.length;
+
+console.log("Subject averages:", subjectAverage);
